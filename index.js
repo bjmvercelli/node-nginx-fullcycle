@@ -10,18 +10,6 @@ const config = {
   database: 'db'
 };
 
-const conn = mysql.createConnection(config);
-
-const insertionQuery = `INSERT INTO people(name) values('Bruno')`;
-
-conn.query(insertionQuery);
-
-const selectQuery = `SELECT * FROM people`;
-
-conn.query(selectQuery);
-
-conn.end();
-
 app.get('/', (req, res) => {
   const conn = mysql.createConnection(config);
 
@@ -33,13 +21,13 @@ app.get('/', (req, res) => {
 
   conn.query(selectQuery, (err, result) => {
     if (err) throw err;
-
+    
     const people = result.map(person => `<li>${person.name}</li>`).join('');
-
+    
+    conn.end();
     res.send(`<h1>Full Cycle Rocks!</h1><ul>${people}</ul>`);
   });
 
-  conn.end();
 });
 
 app.listen(3000, () => {
